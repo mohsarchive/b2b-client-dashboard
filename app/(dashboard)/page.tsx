@@ -4,6 +4,7 @@ import { AnalyticsCharts } from '@/components/dashboard/analytics-charts'
 import { CustomerFiles } from '@/components/dashboard/customer-files'
 import { ActionCenter } from '@/components/dashboard/action-center'
 import { ActivityFeed } from '@/components/dashboard/activity-feed'
+import { WorkspaceTools } from '@/components/dashboard/workspace-tools'
 
 export default function OverviewPage() {
   return (
@@ -13,6 +14,7 @@ export default function OverviewPage() {
         description="Know what is happening, what needs attention, and what to do next."
         live
       />
+      <WorkspaceTools />
       <MetricCards />
       <ActionCenter />
       <AnalyticsCharts />
