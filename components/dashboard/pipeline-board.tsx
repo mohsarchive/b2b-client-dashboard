@@ -6,6 +6,7 @@ import { pipelineStages, type Deal } from '@/lib/data'
 
 export function PipelineBoard() {
   const [deals, setDeals] = useState(() => pipelineStages.map((stage) => ({ ...stage, deals: [...stage.deals] })))
+  const [hydrated, setHydrated] = useState(false)
   const [selected, setSelected] = useState<Deal | null>(null)
   const [stageForNew, setStageForNew] = useState<string | null>(null)
   const [company, setCompany] = useState('')
@@ -17,16 +18,19 @@ export function PipelineBoard() {
       if (saved) setDeals(JSON.parse(saved))
     } catch {
       // Use bundled pipeline data when storage is unavailable or invalid.
+    } finally {
+      setHydrated(true)
     }
   }, [])
 
   useEffect(() => {
+    if (!hydrated) return
     try {
       window.localStorage.setItem('helm.pipeline.deals', JSON.stringify(deals))
     } catch {
       // Session state remains usable when storage is unavailable.
     }
-  }, [deals])
+  }, [deals, hydrated])
 
   const addDeal = () => {
     const stage = deals.find((s) => s.id === stageForNew)
@@ -69,22 +73,9 @@ export function PipelineBoard() {
         ))}
       </div>
 
-      {selected && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4"><div className="w-full max-w-md rounded-xl border border-border bg-card p-5 shadow-2xl">
-          <div className="flex justify-between"><div><p className="text-xs text-muted-foreground">Deal</p><h3 className="mt-1 text-lg font-semibold text-foreground">{selected.company}</h3></div><button type="button" onClick={() => setSelected(null)} aria-label="Close"><X className="size-5 text-muted-foreground" /></button></div>
-          <div className="mt-5 grid grid-cols-2 gap-3"><Info label="Value" value={selected.value} /><Info label="Owner" value={selected.owner} /><Info label="Age" value={selected.age} /><Info label="ID" value={selected.id} /></div>
-          <button type="button" onClick={() => setSelected(null)} className="mt-5 h-9 w-full rounded-md bg-primary text-sm font-medium text-primary-foreground">Done</button>
-        </div></div>
-      )}
+      {selected && <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4" role="dialog" aria-modal="true"><div className="w-full max-w-md rounded-xl border border-border bg-card p-5 shadow-2xl"><div className="flex justify-between"><div><p className="text-xs text-muted-foreground">Deal</p><h3 className="mt-1 text-lg font-semibold text-foreground">{selected.company}</h3></div><button type="button" onClick={() => setSelected(null)} aria-label="Close"><X className="size-5 text-muted-foreground" /></button></div><div className="mt-5 grid grid-cols-2 gap-3"><Info label="Value" value={selected.value} /><Info label="Owner" value={selected.owner} /><Info label="Age" value={selected.age} /><Info label="ID" value={selected.id} /></div><button type="button" onClick={() => setSelected(null)} className="mt-5 h-9 w-full rounded-md bg-primary text-sm font-medium text-primary-foreground">Done</button></div></div>}
 
-      {stageForNew && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4"><div className="w-full max-w-md rounded-xl border border-border bg-card p-5 shadow-2xl">
-          <div className="flex items-start justify-between"><div><h3 className="text-base font-semibold text-foreground">Add deal</h3><p className="text-xs text-muted-foreground">Add a deal to {deals.find((s) => s.id === stageForNew)?.name}.</p></div><button type="button" onClick={() => { setStageForNew(null); setCompany(''); setValue('') }} aria-label="Close"><X className="size-5 text-muted-foreground" /></button></div>
-          <input autoFocus value={company} onChange={(e) => setCompany(e.target.value)} placeholder="Company name" className="mt-4 h-10 w-full rounded-md border border-input bg-input/30 px-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-ring/50" />
-          <input value={value} onChange={(e) => setValue(e.target.value)} placeholder="Deal value (e.g. $25K)" onKeyDown={(e) => { if (e.key === 'Enter') addDeal() }} className="mt-3 h-10 w-full rounded-md border border-input bg-input/30 px-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-ring/50" />
-          <div className="mt-4 flex justify-end gap-2"><button type="button" onClick={() => { setStageForNew(null); setCompany(''); setValue('') }} className="h-9 rounded-md border border-border px-3 text-sm hover:bg-secondary">Cancel</button><button type="button" onClick={addDeal} disabled={!company.trim()} className="flex h-9 items-center gap-1.5 rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50">Add deal<ArrowRight className="size-3.5" /></button></div>
-        </div></div>
-      )}
+      {stageForNew && <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4"><div className="w-full max-w-md rounded-xl border border-border bg-card p-5 shadow-2xl"><div className="flex items-start justify-between"><div><h3 className="text-base font-semibold text-foreground">Add deal</h3><p className="text-xs text-muted-foreground">Add a deal to {deals.find((s) => s.id === stageForNew)?.name}.</p></div><button type="button" onClick={() => { setStageForNew(null); setCompany(''); setValue('') }} aria-label="Close"><X className="size-5 text-muted-foreground" /></button></div><input autoFocus value={company} onChange={(e) => setCompany(e.target.value)} placeholder="Company name" className="mt-4 h-10 w-full rounded-md border border-input bg-input/30 px-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-ring/50" /><input value={value} onChange={(e) => setValue(e.target.value)} placeholder="Deal value (e.g. $25K)" onKeyDown={(e) => { if (e.key === 'Enter') addDeal() }} className="mt-3 h-10 w-full rounded-md border border-input bg-input/30 px-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-ring/50" /><div className="mt-4 flex justify-end gap-2"><button type="button" onClick={() => { setStageForNew(null); setCompany(''); setValue('') }} className="h-9 rounded-md border border-border px-3 text-sm hover:bg-secondary">Cancel</button><button type="button" onClick={addDeal} disabled={!company.trim()} className="flex h-9 items-center gap-1.5 rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50">Add deal<ArrowRight className="size-3.5" /></button></div></div></div>}
     </>
   )
 }
