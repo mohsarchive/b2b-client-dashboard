@@ -3,13 +3,13 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Activity, BarChart3, BellRing, ChevronsUpDown, Database, FileBarChart, FileText, LifeBuoy, Settings, UserPlus, Users, Workflow, CreditCard, LogOut, User } from 'lucide-react'
+import { Activity, BarChart3, BellRing, ChevronsUpDown, Database, FileBarChart, FileText, LayoutGrid, LifeBuoy, Settings, UserPlus, Users, Workflow, CreditCard, LogOut, User } from 'lucide-react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
 
 const nav = [
   { group: 'Workspace', items: [
-    { icon: BarChart3, label: 'Overview', href: '/' },
+    { icon: LayoutGrid, label: 'Overview', href: '/' },
     { icon: BarChart3, label: 'Analytics', href: '/analytics' },
     { icon: Users, label: 'Accounts', href: '/accounts' },
     { icon: Workflow, label: 'Pipelines', href: '/pipelines' },
