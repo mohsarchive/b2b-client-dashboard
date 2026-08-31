@@ -4,21 +4,19 @@ import { AnalyticsCharts } from '@/components/dashboard/analytics-charts'
 import { CustomerFiles } from '@/components/dashboard/customer-files'
 import { ActionCenter } from '@/components/dashboard/action-center'
 import { ActivityFeed } from '@/components/dashboard/activity-feed'
-import { WorkspaceTools } from '@/components/dashboard/workspace-tools'
 
 export default function OverviewPage() {
   return (
-    <div className="space-y-5">
+    <div className="space-y-12">
       <PageHeader
         title="Client intelligence"
-        description="Know what is happening, what needs attention, and what to do next."
+        description="A clear view of revenue, account health, and the work that needs attention."
         live
       />
-      <WorkspaceTools />
       <MetricCards />
       <ActionCenter />
       <AnalyticsCharts />
-      <div className="grid gap-5 lg:grid-cols-[1.35fr_0.65fr]">
+      <div className="grid gap-10 lg:grid-cols-[1.4fr_0.6fr]">
         <CustomerFiles />
         <ActivityFeed />
       </div>
