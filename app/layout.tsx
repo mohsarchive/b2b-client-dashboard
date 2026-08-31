@@ -12,8 +12,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'Helm — Client Intelligence',
   description:
-    'A premium B2B client dashboard for analytics, metrics, and customer database management.',
-  generator: 'v0.app',
+    'Client intelligence workspace for account health, revenue, analytics, and customer operations.',
 }
 
 export const viewport: Viewport = {
