@@ -1,14 +1,15 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Activity, BarChart3, BellRing, ChevronsUpDown, Database, FileBarChart, FileText, LayoutGrid, LifeBuoy, Settings, UserPlus, Users, Workflow, Hexagon, CreditCard, LogOut, User } from 'lucide-react'
+import { Activity, BarChart3, BellRing, ChevronsUpDown, Database, FileBarChart, FileText, LifeBuoy, Settings, UserPlus, Users, Workflow, CreditCard, LogOut, User } from 'lucide-react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
 
 const nav = [
-  { group: 'Core', items: [
-    { icon: LayoutGrid, label: 'Overview', href: '/' },
+  { group: 'Workspace', items: [
+    { icon: BarChart3, label: 'Overview', href: '/' },
     { icon: BarChart3, label: 'Analytics', href: '/analytics' },
     { icon: Users, label: 'Accounts', href: '/accounts' },
     { icon: Workflow, label: 'Pipelines', href: '/pipelines' },
@@ -26,19 +27,17 @@ const nav = [
 
 export function Sidebar() {
   const pathname = usePathname()
+  const [toast, setToast] = useState(false)
+
   return (
     <aside className="hidden w-[224px] shrink-0 flex-col border-r border-sidebar-border bg-sidebar lg:flex">
-      <div className="flex h-16 items-center gap-2.5 border-b border-sidebar-border px-5">
-        <div className="flex size-7 items-center justify-center rounded-md border border-sidebar-border text-sidebar-foreground">
-          <Hexagon className="size-3.5" />
-        </div>
-        <span className="text-sm font-semibold tracking-tight text-sidebar-foreground">Helm</span>
-        <span className="ml-auto text-[10px] text-muted-foreground">Client OS</span>
+      <div className="flex h-16 items-center border-b border-sidebar-border px-5">
+        <span className="text-[15px] font-semibold tracking-[-0.02em] text-sidebar-foreground">Helm</span>
       </div>
 
-      <nav className="flex-1 overflow-y-auto px-3 py-4">
+      <nav className="flex-1 overflow-y-auto px-3 py-5">
         {nav.map((section) => (
-          <div key={section.group} className="mb-6">
+          <div key={section.group} className="mb-7">
             <p className="px-2 pb-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/60">{section.group}</p>
             <ul className="space-y-0.5">
               {section.items.map((item) => {
@@ -46,14 +45,8 @@ export function Sidebar() {
                 const active = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)
                 return (
                   <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      className={cn(
-                        'flex h-8 items-center gap-2.5 rounded-md px-2 text-[13px] transition-colors',
-                        active ? 'bg-sidebar-accent text-sidebar-foreground' : 'text-muted-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-foreground',
-                      )}
-                    >
-                      <Icon className={cn('size-3.5', active ? 'text-sidebar-foreground' : 'text-muted-foreground')} />
+                    <Link href={item.href} className={cn('flex h-8 items-center gap-2.5 rounded-md px-2 text-[13px] transition-colors', active ? 'bg-sidebar-accent text-sidebar-foreground' : 'text-muted-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-foreground')}>
+                      <Icon className="size-3.5" />
                       {item.label}
                     </Link>
                   </li>
@@ -76,8 +69,8 @@ export function Sidebar() {
           })}
         </div>
         <DropdownMenu>
-          <DropdownMenuTrigger render={<button type="button" className="flex w-full items-center gap-2.5 rounded-md border border-sidebar-border px-2.5 py-2 text-left outline-none hover:bg-sidebar-accent/60" />}>
-            <span className="flex size-7 items-center justify-center rounded-full border border-sidebar-border text-[10px] font-semibold text-sidebar-foreground">AC</span>
+          <DropdownMenuTrigger render={<button type="button" className="flex w-full items-center gap-2.5 border border-sidebar-border px-2.5 py-2 text-left outline-none hover:bg-sidebar-accent/60" />}>
+            <span className="flex size-7 items-center justify-center border border-sidebar-border text-[10px] font-semibold text-sidebar-foreground">AC</span>
             <span className="min-w-0 flex-1"><span className="block truncate text-xs font-medium text-sidebar-foreground">Ava Chen</span><span className="block truncate text-[10px] text-muted-foreground">Administrator</span></span>
             <ChevronsUpDown className="size-3.5 text-muted-foreground" />
           </DropdownMenuTrigger>
@@ -90,10 +83,11 @@ export function Sidebar() {
             <DropdownMenuItem render={<Link href="/billing" />}><CreditCard className="size-4" />Billing</DropdownMenuItem>
             <DropdownMenuItem render={<Link href="/settings" />}><Settings className="size-4" />Settings</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem variant="destructive" onClick={() => {}}><LogOut className="size-4" />Log out</DropdownMenuItem>
+            <DropdownMenuItem variant="destructive" onClick={() => setToast(true)}><LogOut className="size-4" />Log out</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+      {toast && <button type="button" onClick={() => setToast(false)} className="fixed bottom-5 left-5 z-[110] border border-border bg-popover px-4 py-3 text-sm text-foreground shadow-lg">Signed out of this demo workspace</button>}
     </aside>
   )
 }
