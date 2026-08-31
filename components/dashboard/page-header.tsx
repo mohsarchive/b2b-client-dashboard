@@ -9,26 +9,21 @@ export function PageHeader({
 }) {
   return (
     <header className="border-b border-border pb-5 sm:pb-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div className="max-w-3xl">
-          <div className="mb-2 flex items-center gap-2 text-[11px] text-muted-foreground">
+      <div className="flex items-end justify-between gap-6">
+        <div className="min-w-0">
+          <div className="mb-2 flex items-center gap-2 text-[11px] font-medium text-muted-foreground">
             <span>Helm</span>
-            <span aria-hidden="true">/</span>
+            <span className="text-muted-foreground/40">/</span>
             <span>{title}</span>
-            {live && (
-              <span className="ml-1 inline-flex items-center gap-1.5 border-l border-border pl-2">
-                <span className="size-1.5 rounded-full bg-foreground" />
-                Updated just now
-              </span>
-            )}
+            {live && <span className="border-l border-border pl-2 text-foreground">Live</span>}
           </div>
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">{title}</h1>
+          <h1 className="text-[26px] font-semibold tracking-[-0.03em] text-foreground sm:text-3xl">{title}</h1>
           <p className="mt-1.5 max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
         </div>
         {live && (
-          <div className="hidden text-right sm:block">
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Workspace status</p>
-            <p className="mt-0.5 text-xs font-medium text-foreground">Operational</p>
+          <div className="hidden shrink-0 text-right sm:block">
+            <p className="text-[10px] font-medium uppercase tracking-[0.12em] text-muted-foreground">Status</p>
+            <p className="mt-1 text-xs font-medium text-foreground">Operational</p>
           </div>
         )}
       </div>
