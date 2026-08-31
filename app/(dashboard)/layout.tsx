@@ -9,7 +9,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       <div className="flex min-w-0 flex-1 flex-col">
         <TopbarQA />
         <main className="flex-1 overflow-y-auto">
-          <div className="mx-auto flex max-w-[1400px] flex-col gap-6 p-5 lg:p-8">
+          <div className="mx-auto flex max-w-[1280px] flex-col gap-10 px-5 py-8 sm:px-8 lg:px-10 lg:py-10 xl:px-12">
             {children}
           </div>
         </main>
